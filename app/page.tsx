@@ -1,101 +1,226 @@
-import Image from "next/image";
+"use client";
+import Link from "next/link";
+import Autoplay from "embla-carousel-autoplay";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { useRef, useState } from "react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { CalendarIcon } from "lucide-react";
+import { addDays, format } from "date-fns";
+import { DateRange } from "react-day-picker";
+import { Calendar } from "@/components/ui/calendar";
 
-export default function Home() {
+export default function Home({
+  className,
+}: React.HTMLAttributes<HTMLDivElement>) {
+  const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
+  const [info, setInfo] = useState({
+    name: "",
+    email: "",
+    phone: "",
+  });
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: new Date(),
+    to: addDays(new Date(), 5),
+  });
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="flex flex-col items-center">
+      <div className="flex w-screen h-[60px] items-center justify-center gap-10 mt-5">
+        <Link href="">
+          <h1>Main</h1>
+        </Link>
+        <Link href="#reserve">
+          <h1>Reserve</h1>
+        </Link>
+        <Link href="#contact">
+          <h1>Contact</h1>
+        </Link>
+      </div>
+      <div className="w-[80vw] h-[1px] bg-gray-400 mt-10"></div>
+      <div className="w-screen h-[80vh] flex items-center justify-between px-[20vw]">
+        <Carousel
+          plugins={[plugin.current]}
+          className="w-full max-w-xs"
+          onMouseEnter={plugin.current.stop}
+          onMouseLeave={plugin.current.reset}
+        >
+          <CarouselContent>
+            {Array.from({ length: 5 }).map((_, index) => (
+              <CarouselItem key={index}>
+                <div className="p-1">
+                  <Card>
+                    <CardContent className="flex aspect-square items-center justify-center p-6">
+                      <span className="text-4xl font-semibold">
+                        {index + 1}
+                      </span>
+                    </CardContent>
+                  </Card>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+        <div className="max-w-[500px] flex gap-5 flex-col">
+          <h1>Hello</h1>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti
+            expedita dolor excepturi quis eius ipsum vitae tempore fugiat, eos
+            ab odio porro vel nostrum doloribus aspernatur rem id a numquam.
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+      <div className="w-[80vw] h-[1px] bg-gray-400"></div>
+      <div
+        className="w-screen h-auto flex flex-col items-center mt-20"
+        id="reserve"
+      >
+        <h1>Reserve a date</h1>
+        <div className="w-[80vw] h-auto mt-20 flex items-center justify-center gap-56">
+          <div className="flex flex-col gap-3 w-[400px]">
+            <h1>To make a reservation we need aditional info about you</h1>
+            <input
+              placeholder="Enter your name..."
+              required
+              value={info.name}
+              name="name"
+              onChange={(e) =>
+                setInfo({
+                  ...info,
+                  [e?.target.name]: e?.target.value,
+                })
+              }
+            ></input>
+            <input
+              placeholder="Enter your email..."
+              required
+              value={info.email}
+              name="email"
+              onChange={(e) =>
+                setInfo({
+                  ...info,
+                  [e?.target.name]: e?.target.value,
+                })
+              }
+            ></input>
+            <input
+              placeholder="Enter your phone..."
+              required
+              value={info.phone}
+              name="phone"
+              onChange={(e) =>
+                setInfo({
+                  ...info,
+                  [e?.target.name]: e?.target.value,
+                })
+              }
+            ></input>
+            <div className="flex items-center gap-5">
+              <p>Pick a date</p>
+              <div className={cn("grid gap-2", className)}>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      id="date"
+                      variant={"outline"}
+                      className={cn(
+                        "w-[300px] justify-start text-left font-normal",
+                        !date && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon />
+                      {date?.from ? (
+                        date.to ? (
+                          <>
+                            {format(date.from, "LLL dd, y")} -{" "}
+                            {format(date.to, "LLL dd, y")}
+                          </>
+                        ) : (
+                          format(date.from, "LLL dd, y")
+                        )
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      initialFocus
+                      mode="range"
+                      defaultMonth={date?.from}
+                      selected={date}
+                      onSelect={setDate}
+                      numberOfMonths={2}
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+            </div>
+            <AlertDialog>
+              <AlertDialogTrigger>
+                <Button>Reserve</Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    Info about your reservation
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Your name: {info.name}
+                  </AlertDialogDescription>
+                  <AlertDialogDescription>
+                    Your email: {info.email}
+                  </AlertDialogDescription>
+                  <AlertDialogDescription>
+                    Your phone: {info.phone}
+                  </AlertDialogDescription>
+                  <AlertDialogDescription>
+                    Your dates: {format(date.from, "LLL dd y").toString()}
+                    {" - "}
+                    {format(date.to, "LLL dd y").toString()}
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogAction>Continue</AlertDialogAction>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
+        </div>
+      </div>
+      <div className="w-[80vw] h-[1px] bg-gray-400 mt-20"></div>
+      <div
+        id="contact"
+        className="flex items-center justify-center w-screen h-[80vh] flex-col gap-10"
+      >
+        <h2 className=" text-5xl"> In case of any questions call us</h2>
+        <h2 className=" text-5xl"> 8-800-335-3535</h2>
+        <h2 className=" text-5xl"> example@mail.com</h2>
+      </div>
+      <div className="w-[80vw] h-[1px] bg-gray-400 mt-10"></div>
+      <div className="w-screen flex items-center justify-center p-5">
+        <p>All rights reserved | Dimasiks&trade;</p>
+      </div>
     </div>
   );
 }
