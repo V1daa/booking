@@ -58,7 +58,7 @@ export default function Home({
         </Link>
       </div>
       <div className="w-[80vw] h-[1px] bg-gray-400 mt-10"></div>
-      <div className="w-screen h-[80vh] flex items-center justify-between px-[20vw]">
+      <div className="w-screen h-[80vh] flex items-center gap-20 justify-between px-[20vw] max-[1000px]:flex-col max-[1000px]:my-20">
         <Carousel
           plugins={[plugin.current]}
           className="w-full max-w-xs"
@@ -83,7 +83,7 @@ export default function Home({
           <CarouselPrevious />
           <CarouselNext />
         </Carousel>
-        <div className="max-w-[500px] flex gap-5 flex-col">
+        <div className="max-w-[500px] flex gap-5 flex-col min-w-[250px] ">
           <h1>Hello</h1>
           <p>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Corrupti
